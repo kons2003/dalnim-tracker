@@ -1,11 +1,13 @@
 package com.kons.dalnimtracker.dto;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.kons.dalnimtracker.domain.Sighting;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
+@JsonPropertyOrder({"id", "latitude", "longitude", "locationDescription", "content", "catStatus", "imageUrl", "reporterName", "createdAt"})
 public class SightingResponseDto { // 서버 -> 사용자
     private final Integer id;
     private final Double latitude;
