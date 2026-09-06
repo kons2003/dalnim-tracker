@@ -1,8 +1,10 @@
 package com.kons.dalnimtracker.service;
 
 import com.kons.dalnimtracker.domain.Sighting;
+import com.kons.dalnimtracker.dto.PasswordRequestDto;
 import com.kons.dalnimtracker.dto.SightingRequestDto;
 import com.kons.dalnimtracker.dto.SightingResponseDto;
+import com.kons.dalnimtracker.dto.SightingUpdateRequestDto;
 import com.kons.dalnimtracker.repository.SightingRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -10,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor // 인터페이스 가져올때 의존성 주입
@@ -31,6 +32,26 @@ public class SightingService {
     public List<SightingResponseDto> getAllSightings() {
         return sightingRepository.findAllByOrderByIdDesc().stream()
                 .map(SightingResponseDto::new)
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+    // 제보 글 수정 로직
+    @Transactional
+    public SightingResponseDto updateSighting(Integer id, SightingUpdateRequestDto requestDto) {
+        Sighting sighting = sightingRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다. id=" + id));
+        sighting.validatePassword(requestDto.getEditPassword());
+        sighting.update(requestDto);
+        return new SightingResponseDto(sighting);
+    }
+
+    // 제보 글 삭제 로직
+    @Transactional
+    public void deleteSighting(Integer id, PasswordRequestDto requestDto) {
+        Sighting sighting = sightingRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다. id=" + id));
+
+        sighting.validatePassword(requestDto.getEditPassword());
+        sightingRepository.delete(sighting);
     }
 }

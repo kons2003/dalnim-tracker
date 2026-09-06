@@ -1,7 +1,9 @@
 package com.kons.dalnimtracker.controller;
 
+import com.kons.dalnimtracker.dto.PasswordRequestDto;
 import com.kons.dalnimtracker.dto.SightingRequestDto;
 import com.kons.dalnimtracker.dto.SightingResponseDto;
+import com.kons.dalnimtracker.dto.SightingUpdateRequestDto;
 import com.kons.dalnimtracker.service.SightingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,5 +31,23 @@ public class SightingController {
     public ResponseEntity<List<SightingResponseDto>> getAllSightings() {
         List<SightingResponseDto> responseList = sightingService.getAllSightings();
         return ResponseEntity.ok(responseList);
+    }
+
+    // 제보 글 수정 API
+    @PutMapping("/{id}")
+    public ResponseEntity<SightingResponseDto> updateSighting(
+            @PathVariable Integer id,
+            @RequestBody SightingUpdateRequestDto requestDto) {
+        SightingResponseDto responseDto = sightingService.updateSighting(id, requestDto);
+        return ResponseEntity.ok(responseDto);
+    }
+
+    // 제보 글 삭제 API
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSighting(
+            @PathVariable Integer id,
+            @RequestBody PasswordRequestDto requestDto) {
+        sightingService.deleteSighting(id, requestDto);
+        return ResponseEntity.noContent().build();
     }
 }

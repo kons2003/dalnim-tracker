@@ -1,6 +1,7 @@
 package com.kons.dalnimtracker.domain;
 
 import com.kons.dalnimtracker.dto.SightingRequestDto;
+import com.kons.dalnimtracker.dto.SightingUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -58,5 +59,22 @@ public class Sighting {
         this.imageUrl = requestDto.getImageUrl();
         this.reporterName = requestDto.getReporterName();
         this.editPassword = requestDto.getEditPassword();
+    }
+
+    // 비밀번호 검증 메서드
+    public void validatePassword(String inputPassword) {
+        if (!this.editPassword.equals(inputPassword)) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+    }
+
+    // 데이터 수정 메서드
+    public void update(SightingUpdateRequestDto requestDto) {
+        this.latitude = requestDto.getLatitude();
+        this.longitude = requestDto.getLongitude();
+        this.locationDescription = requestDto.getLocationDescription();
+        this.content = requestDto.getContent();
+        this.catStatus = requestDto.getCatStatus();
+        this.imageUrl = requestDto.getImageUrl();
     }
 }
