@@ -1,9 +1,11 @@
 package com.kons.dalnimtracker.domain;
 
+import com.kons.dalnimtracker.dto.SightingRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Entity // JPA가 관리하는 엔티티 선언
 @Getter // Getter 메서드 자동 생성
@@ -44,6 +46,17 @@ public class Sighting {
 
     @PrePersist // 데이터베이스에 최초로 저장 되기 직전 메서드 자동 실행
     public void prePersist() { // 자동 시간 입력
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+    }
+
+    public Sighting(SightingRequestDto requestDto) {
+        this.latitude = requestDto.getLatitude();
+        this.longitude = requestDto.getLongitude();
+        this.locationDescription = requestDto.getLocationDescription();
+        this.content = requestDto.getContent();
+        this.catStatus = requestDto.getCatStatus();
+        this.imageUrl = requestDto.getImageUrl();
+        this.reporterName = requestDto.getReporterName();
+        this.editPassword = requestDto.getEditPassword();
     }
 }
