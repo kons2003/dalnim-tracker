@@ -1,14 +1,14 @@
 package com.kons.dalnimtracker.repository;
 
 import com.kons.dalnimtracker.domain.Sighting;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository; // findById, findAll, save, delete 등 CRUD 제공
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public interface SightingRepository extends JpaRepository<Sighting, Integer> {
 
-    // 전체 목격 기록 Id 최신순(내림차순) 조회
-    List<Sighting> findAllByOrderByIdDesc();
+    // catStatus가 일치하는 데이터만 페이징 처리하여 조회
+    Page<Sighting> findByCatStatus(String catStatus, Pageable pageable);
 }

@@ -8,10 +8,10 @@ import com.kons.dalnimtracker.dto.SightingUpdateRequestDto;
 import com.kons.dalnimtracker.repository.SightingRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor // 인터페이스 가져올때 의존성 주입
@@ -27,12 +27,17 @@ public class SightingService {
         return new SightingResponseDto(savedSighting);
     }
 
-    // 전체 제보 글 최신순 조회 로직
-    @Transactional(readOnly = true)
-    public List<SightingResponseDto> getAllSightings() {
-        return sightingRepository.findAllByOrderByIdDesc().stream()
-                .map(SightingResponseDto::new)
-                .toList();
+    // 제보 글 전체 조회 로직
+    public Page<SightingResponseDto> getAllSightings(String catStatus, Pageable pageable) {
+        Page<Sighting> sightings;
+
+        // 상태값이 파라미터로 넘어왔다면 필터링 조회, 없다면 전체 조회
+        if (catStatus != null && !catStatus.isBlank()) {
+            sightings = sightingRepository.findByCatStatus(catStatus, pageable);
+        } else {
+            sightings = sightingRepository.findAll(pageable);
+        }
+        return sightings.map(SightingResponseDto::new);
     }
 
     // 제보 글 수정 로직

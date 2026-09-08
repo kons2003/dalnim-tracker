@@ -6,11 +6,13 @@ import com.kons.dalnimtracker.dto.SightingResponseDto;
 import com.kons.dalnimtracker.dto.SightingUpdateRequestDto;
 import com.kons.dalnimtracker.service.SightingService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController // JSON 형태의 데이터를 주고 받는 REST API 컨트롤러임을 명시
 @RequestMapping("/api/sightings")
@@ -26,11 +28,14 @@ public class SightingController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
-    // 제보 글 전체 목록 최신순 조회 API
+    // 제보 글 전체(페이징/필터링) 조회 API
     @GetMapping
-    public ResponseEntity<List<SightingResponseDto>> getAllSightings() {
-        List<SightingResponseDto> responseList = sightingService.getAllSightings();
-        return ResponseEntity.ok(responseList);
+    public ResponseEntity<Page<SightingResponseDto>> getAllSightings(
+            @RequestParam(required = false) String catStatus,
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        Page<SightingResponseDto> response = sightingService.getAllSightings(catStatus, pageable);
+        return ResponseEntity.ok(response);
     }
 
     // 제보 글 수정 API
