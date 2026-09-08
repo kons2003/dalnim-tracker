@@ -3,6 +3,8 @@ package com.kons.dalnimtracker.domain;
 import com.kons.dalnimtracker.dto.SightingRequestDto;
 import com.kons.dalnimtracker.dto.SightingUpdateRequestDto;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
@@ -10,7 +12,9 @@ import java.time.ZoneId;
 
 @Entity // JPA가 관리하는 엔티티 선언
 @Getter // Getter 메서드 자동 생성
+@Builder
 @NoArgsConstructor // 파라미터가 없는 기본 생성자 자동 생성
+@AllArgsConstructor
 @Table(name = "sighting") // 매핑될 DB 테이블의 이름 지정
 public class Sighting {
 

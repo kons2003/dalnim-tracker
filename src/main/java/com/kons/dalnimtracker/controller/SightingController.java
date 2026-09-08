@@ -36,7 +36,7 @@ public class SightingController {
     // 제보 글 수정 API
     @PutMapping("/{id}")
     public ResponseEntity<SightingResponseDto> updateSighting(
-            @PathVariable Integer id,
+            @PathVariable("id") Integer id,
             @RequestBody SightingUpdateRequestDto requestDto) {
         SightingResponseDto responseDto = sightingService.updateSighting(id, requestDto);
         return ResponseEntity.ok(responseDto);
@@ -45,7 +45,7 @@ public class SightingController {
     // 제보 글 삭제 API
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSighting(
-            @PathVariable Integer id,
+            @PathVariable("id") Integer id,
             @RequestBody PasswordRequestDto requestDto) {
         sightingService.deleteSighting(id, requestDto);
         return ResponseEntity.noContent().build();
