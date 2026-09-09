@@ -1,12 +1,12 @@
 package com.kons.dalnimtracker.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class SightingRequestDto { // 사용자 -> 서버
     private Double latitude;
     private Double longitude;
